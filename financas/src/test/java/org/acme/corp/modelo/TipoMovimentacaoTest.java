@@ -17,7 +17,7 @@ public class TipoMovimentacaoTest {
 		Conta conta = new Conta();
 		conta.setTitular("Luiz");
 		conta.setBanco("Bradesco");
-		conta.setAgencia("0203-05");
+		conta.setAgencia("0203-78");
 		conta.setNumero("124323-3");
 		
 		Movimentacao movimentacao = new Movimentacao();
@@ -54,22 +54,25 @@ public class TipoMovimentacaoTest {
 		
 		Movimentacao viagemSP = new Movimentacao();
 		viagemSP.setData(Calendar.getInstance());
-		viagemSP.setDescricao("Viagem a São Paulo");
+		viagemSP.setDescricao("Viagem a Bauru");
 		viagemSP.setTipo(TipoMovimentacao.SAIDA);
 		viagemSP.setValor(new BigDecimal("134.50"));
 		
 		viagemSP.setConta(conta);		
-		viagemSP.setCategoria(Arrays.asList(viagem, negocios));
-		
+		viagemSP.setCategorias(Arrays.asList(viagem, negocios));
 		
 		Movimentacao viagemRJ = new Movimentacao();
-		viagemRJ.setData(Calendar.getInstance());
-		viagemRJ.setDescricao("Viagem ao Rio de Janeiro");
+		
+		Calendar amanha = Calendar.getInstance();
+		amanha.add(Calendar.DAY_OF_MONTH, 1);
+		
+		viagemRJ.setData(amanha);
+		viagemRJ.setDescricao("Viagem a Assis");
 		viagemRJ.setTipo(TipoMovimentacao.SAIDA);
 		viagemRJ.setValor(new BigDecimal("198.50"));
 
 		viagemRJ.setConta(conta);		
-		viagemRJ.setCategoria(Arrays.asList(viagem, negocios));
+		viagemRJ.setCategorias(Arrays.asList(viagem, negocios));
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		
