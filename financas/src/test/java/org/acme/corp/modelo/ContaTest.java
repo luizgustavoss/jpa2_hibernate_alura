@@ -3,8 +3,8 @@ package org.acme.corp.modelo;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
+import org.acme.corp.dao.ContaDAO;
 import org.acme.corp.util.JPAUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +23,9 @@ public class ContaTest {
 		EntityManager em = JPAUtil.getEntityManager();
 		
 		em.getTransaction().begin();
-		em.persist(conta);
+		
+		new ContaDAO(em).inserir(conta);
+		
 		em.getTransaction().commit();
 		
 		em.close();
@@ -34,12 +36,12 @@ public class ContaTest {
 	@Test
 	public void testarBuscarConta() {
 
-		
 		EntityManager em = JPAUtil.getEntityManager();
 		
 		em.getTransaction().begin();
-
-		Conta conta = em.find(Conta.class, 1);
+		
+		Conta conta = new ContaDAO(em).recuperarPorId(1);
+		
 		Assert.assertNotNull(conta);
 		
 		conta.setTitular("João");
@@ -56,8 +58,8 @@ public class ContaTest {
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		
-
-		Conta conta = em.find(Conta.class, 8);
+		Conta conta = new ContaDAO(em).recuperarPorId(8);
+		
 		Assert.assertNotNull(conta);
 		
 		for (Movimentacao m : conta.getMovimentacoes()) {
@@ -74,10 +76,7 @@ public class ContaTest {
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		
-
-		String jpql = " select distinct c from Conta c left join fetch c.movimentacoes ";
-		
-		List<Conta> contas = em.createQuery(jpql).getResultList();
+		List<Conta> contas = new ContaDAO(em).recuperarContasComMovimentacoes();
 		
 		for (Conta c : contas) {
 			System.out.println("\n\n");
@@ -86,7 +85,6 @@ public class ContaTest {
 			System.out.println("Agencia: " + c.getAgencia());
 			
 			for(Movimentacao m : c.getMovimentacoes()){
-				
 				System.out.println("    Descrição: " + m.getDescricao());
 			}
 		}
@@ -104,13 +102,8 @@ public class ContaTest {
 		
 		Conta conta = new Conta();
 		conta.setId(8);
-
-		String jpql = " select count(m) from Movimentacao m where m.conta = :pConta ";
 		
-		Query query = em.createQuery(jpql);
-		query.setParameter("pConta", conta);
-		
-		Long total = (Long) query.getSingleResult();
+		Long total = new ContaDAO(em).recuperarQuantidadeDeMovimentacoesDaConta(conta);
 		
 		System.out.println("Total: " + total);
 		
