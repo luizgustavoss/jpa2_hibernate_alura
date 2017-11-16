@@ -1,37 +1,46 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-    version="2.0">
+	version="2.0">
 
-    <!-- unidade de persistencia com o nome financas -->
-    <persistence-unit name="financas">
+	<!-- unidade de persistencia com o nome financas -->
+	<persistence-unit name="financas">
 
-        <!-- Implementação do JPA, no nosso caso Hibernate -->
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<!-- Implementação do JPA, no nosso caso Hibernate -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <!-- Aqui são listadas todas as entidades -->
-        <class>org.acme.corp.modelo.Conta</class>
-        <class>org.acme.corp.modelo.Movimentacao</class>
-        <class>org.acme.corp.modelo.Categoria</class>
-        <class>org.acme.corp.modelo.Cliente</class>
+		<!-- Aqui são listadas todas as entidades -->
+		<class>org.acme.corp.modelo.Conta</class>
+		<class>org.acme.corp.modelo.Movimentacao</class>
+		<class>org.acme.corp.modelo.Categoria</class>
+		<class>org.acme.corp.modelo.Cliente</class>
 
-        <properties>    
-            <!-- Propriedades JDBC -->
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/financas" />
-            <property name="javax.persistence.jdbc.user" value="postgres" />
-            <property name="javax.persistence.jdbc.password" value="postgres" />
+		<properties>
+			<!-- Propriedades JDBC -->
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/financas" />
+			<property name="javax.persistence.jdbc.user" value="postgres" />
+			<property name="javax.persistence.jdbc.password" value="postgres" />
 
-            <!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" /> -->     
-            
-            <!-- Usando nossa customização ao invés da configuração padrão -->                   
-            <property name="hibernate.dialect" value="org.acme.corp.util.CustomPostgresqlDialect" />
-            
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            <property name="hibernate.show_sql" value="true" />
-            <property name="hibernate.format_sql" value="true" />
-            
-        </properties>
-    </persistence-unit>
+			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" 
+				/> -->
+
+			<!-- Usando nossa customização ao invés da configuração padrão -->
+			<property name="hibernate.dialect" value="org.acme.corp.util.CustomPostgresqlDialect" />
+
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+
+			<!-- Configurações relativas ao pool de conexões -->
+
+			<property name="hibernate.connection.provider_class" value="org.hibernate.c3p0.internal.C3P0ConnectionProvider"/>
+			<property name="hibernate.c3p0.min_size" value="5" />
+			<property name="hibernate.c3p0.max_size" value="20" />
+			<property name="hibernate.c3p0.timeout" value="180" />
+
+
+		</properties>
+	</persistence-unit>
 </persistence>
