@@ -54,6 +54,12 @@ public class JpaConfigurator {
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		
+		// configuração para utilização de cache de segundo nível
+		props.setProperty("hibernate.cache.use_second_level_cache", "true");
+		props.setProperty("hibernate.cache.use_query_cache", "true"); // habilita o cache de query
+		props.setProperty("hibernate.cache.region.fatory_class", "org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory");
+		
 
 		entityManagerFactory.setJpaProperties(props);
 		return entityManagerFactory;

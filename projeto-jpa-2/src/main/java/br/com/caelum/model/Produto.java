@@ -15,9 +15,12 @@ import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) // habilita cache de segundo nível para esta entidade
 public class Produto {
 
 	@Id
@@ -39,6 +42,7 @@ public class Produto {
 	private double preco;
 	
 	@ManyToMany
+	@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) // habilita o cache de segundo nível no relacionamento
 	private List<Categoria> categorias = new ArrayList<>();
 	
 	
